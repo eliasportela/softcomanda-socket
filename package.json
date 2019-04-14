@@ -1,0 +1,28 @@
+{
+  "name": "comanda-server",
+  "version": "1.0.0",
+  "description": "Comanda Virtual para bares, lanchonetes  e restaurantes",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/maloka-team/lecard-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/maloka-team/lecard-server/issues"
+  },
+  "homepage": "https://gitlab.com/maloka-team/lecard-server#README"
+}
