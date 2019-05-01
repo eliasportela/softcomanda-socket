@@ -8,9 +8,19 @@ server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
 io.on('connection', function (socket) {
+    
+    //novo pedido
     socket.on('new_order', function(data) {
         io.sockets.emit('new_order', {
             data: data
         });
     });
+    
+    //nova comanda
+    socket.on('new_menu', function(data) {
+        io.sockets.emit('new_order', {
+            data: data
+        });
+    });
+    
 });
