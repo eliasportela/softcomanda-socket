@@ -18,7 +18,7 @@ io.on('connection', function (socket) {
     
     //nova comanda
     socket.on('new_menu', function(data) {
-        io.sockets.emit('new_order', {
+        io.sockets.emit('new_menu', {
             data: data
         });
     });
