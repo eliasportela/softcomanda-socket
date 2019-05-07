@@ -22,5 +22,12 @@ io.on('connection', function (socket) {
             data: data
         });
     });
+
+    //pedido finalizado
+    socket.on('order_finished', function(data) {
+        io.sockets.emit('order_finished', {
+            data: data
+        });
+    });
     
 });
