@@ -26,6 +26,30 @@ server.listen(port, function () {
 //   });
 // });
 
+io.on('connection', function (socket) {
+    
+    //novo pedido
+    socket.on('new_order', function(data) {
+        io.sockets.emit('new_order', {
+            data: data
+        });
+    });
+
+	//nova comanda
+    socket.on('new_menu', function(data) {
+        io.emit('new_menu', {
+            data: data
+        });
+    });
+
+    //pedido finalizado
+    socket.on('order_finished', function(data) {
+        io.emit('order_finished', {
+            data: data
+        });
+    });
+});
+
 var e1 = io.of('/1');
 e1.on('connection', function (socket) {
     
