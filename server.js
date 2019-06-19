@@ -80,6 +80,13 @@ e1.on('connection', function (socket) {
             data: data
         });
     });
+	
+    //Imprimir pedido
+    socket.on('message', function(data) {
+        e1.emit('message', {
+            data: data
+        });
+    });
     
 });
 
