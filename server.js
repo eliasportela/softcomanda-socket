@@ -76,9 +76,7 @@ e1.on('connection', function (socket) {
 	
     //Imprimir pedido
     socket.on('print_order', function(data) {
-        e1.emit('print_order', {
-            data: data
-        });
+        e1.emit('print_order', data);
     });
 	
     //Imprimir pedido
