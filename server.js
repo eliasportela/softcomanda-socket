@@ -79,6 +79,11 @@ e1.on('connection', function (socket) {
         e1.emit('print_order', data);
     });
 	
+    //Status impressora
+    socket.on('connect_printer', function(data) {
+        e1.emit('connect_printer', data);
+    });
+	
     //Imprimir pedido
     socket.on('message', function(data) {
         e1.emit('message', {
