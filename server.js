@@ -10,46 +10,6 @@ server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
 
-// app.get('/class/:classID', function(req,res) {
-//   className = req.params.classID;
-//   nsp = io.of('/' + className)
-//   res.sendFile(__dirname + '/index.html');
-
-//   nsp.on('connection', function(socket) {
-    
-//     socket.on('new_order', function(data) {
-//         e1.emit('new_order', {
-//             data: data
-//         });
-//     });
-
-//   });
-// });
-
-io.on('connection', function (socket) {
-    
-    //novo pedido
-    socket.on('new_order', function(data) {
-        io.sockets.emit('new_order', {
-            data: data
-        });
-    });
-
-	//nova comanda
-    socket.on('new_menu', function(data) {
-        io.emit('new_menu', {
-            data: data
-        });
-    });
-
-    //pedido finalizado
-    socket.on('order_finished', function(data) {
-        io.emit('order_finished', {
-            data: data
-        });
-    });
-});
-
 var e1 = io.of('/1');
 e1.on('connection', function (socket) {
     
@@ -98,9 +58,9 @@ e2.on('connection', function (socket) {
     
     //novo pedido
     socket.on('new_order', function(data) {
-    	e2.emit('new_order', {
-        	data: data
-    	});
+        e2.emit('new_order', {
+            data: data
+        });
     });
     
     //nova comanda
@@ -113,6 +73,66 @@ e2.on('connection', function (socket) {
     //pedido finalizado
     socket.on('order_finished', function(data) {
         e2.emit('order_finished', {
+            data: data
+        });
+    });
+    
+    //Imprimir pedido
+    socket.on('print_order', function(data) {
+        e2.emit('print_order', data);
+    });
+    
+    //Status impressora
+    socket.on('connect_printer', function(data) {
+        e2.emit('connect_printer', data);
+    });
+    
+    //Imprimir pedido
+    socket.on('message', function(data) {
+        e2.emit('message', {
+            data: data
+        });
+    });
+    
+});
+
+var e3 = io.of('/3');
+e2.on('connection', function (socket) {
+    
+    //novo pedido
+    socket.on('new_order', function(data) {
+        e3.emit('new_order', {
+            data: data
+        });
+    });
+    
+    //nova comanda
+    socket.on('new_menu', function(data) {
+        e3.emit('new_menu', {
+            data: data
+        });
+    });
+
+    //pedido finalizado
+    socket.on('order_finished', function(data) {
+        e3.emit('order_finished', {
+            data: data
+        });
+    });
+    
+    //Imprimir pedido
+    socket.on('print_order', function(data) {
+        e3.emit('print_order', data);
+    });
+    
+    //Status impressora
+    socket.on('connect_printer', function(data) {
+        e3.emit('connect_printer', data);
+    });
+    
+    //Imprimir pedido
+    socket.on('message', function(data) {
+        e3.emit('message', {
             data: data
         });
     });
