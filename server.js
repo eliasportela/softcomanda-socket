@@ -97,7 +97,7 @@ e2.on('connection', function (socket) {
 });
 
 var e3 = io.of('/3');
-e2.on('connection', function (socket) {
+e3.on('connection', function (socket) {
     
     //novo pedido
     socket.on('new_order', function(data) {
