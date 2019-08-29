@@ -13,6 +13,7 @@ server.listen(port, function () {
 var delivery = io.of('/delivery'); //LeCard Delivery
 var e1 = io.of('/mbfqfluwjbaw3ron5psf2cqt'); //Homologacao
 var e2 = io.of('/mbfqfluwjbaw3ron5psf2cqr'); //Donnis Pizzaria
+var e3 = io.of('/3'); //Donnis Pizzaria (Temporario)
 
 /*
 new_order => novo pedido
@@ -50,6 +51,20 @@ e2.on('connection', function (socket) {
     socket.on('message', function(data) { e2.emit('message', {data: data}); });
 
     socket.on('delivery_order', function(data) { e2.emit('delivery_order', {data: data}); });
+    socket.on('delivery_status', function(data) { delivery.emit('delivery_status', {data: data}); });
+
+});
+
+e3.on('connection', function (socket) {
+
+    socket.on('new_order', function(data) { e3.emit('new_order', {data: data}); });
+    socket.on('new_menu', function(data) { e3.emit('new_menu', {data: data}); });
+    socket.on('order_finished', function(data) { e3.emit('order_finished', {data: data}); });
+    socket.on('print_order', function(data) { e3.emit('print_order', data); });
+    socket.on('connect_printer', function(data) { e3.emit('connect_printer', data); });
+    socket.on('message', function(data) { e3.emit('message', {data: data}); });
+
+    socket.on('delivery_order', function(data) { e3.emit('delivery_order', {data: data}); });
     socket.on('delivery_status', function(data) { delivery.emit('delivery_status', {data: data}); });
 
 });
