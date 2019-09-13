@@ -56,10 +56,20 @@ delivery.on('connection', function (socket) {
     });
 
     socket.on('delivery_order', function(data) {
-        //console.log("Elias");
-        e1.emit('delivery_order', {data: data});
-        e2.emit('delivery_order', {data: data});
-        e4.emit('delivery_order', {data: data});
+        
+        switch(data.token) {
+            case 'mbfqfluwjbaw3ron5psf2cqt':
+                e1.emit('delivery_order', {data: data}); 
+                break;
+            
+            case 'mbfqfluwjbaw3ron5psf2cqr':
+                e2.emit('delivery_order', {data: data});        
+                break;
+            
+            case 'tiophilluwjbaw3ron5psf2qr2':
+                e4.emit('delivery_order', {data: data});        
+                break;
+        }
     });
 
 });
