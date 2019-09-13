@@ -14,6 +14,12 @@ var delivery = io.of('/delivery'); //LeCard Delivery
 var e1 = io.of('/mbfqfluwjbaw3ron5psf2cqt'); //Homologacao
 var e2 = io.of('/mbfqfluwjbaw3ron5psf2cqr'); //Donnis Pizzaria
 var e3 = io.of('/3'); //Donnis Pizzaria (Temporario)
+var e4 = io.of('/tiophilluwjbaw3ron5psf2qr2'); //Tio Phill
+
+setConection(e1);
+setConection(e2);
+setConection(e3);
+setConection(e4);
 
 /*
 new_order => novo pedido
@@ -27,47 +33,21 @@ message => Imprimir pedido
 delivery_order => Novo pedido delivery
 */
 
-e1.on('connection', function (socket) {
+function setConection(con) {
+    con.on('connection', function (socket) {
 
-    socket.on('new_order', function(data) { e1.emit('new_order', {data: data}); });
-    socket.on('new_menu', function(data) { e1.emit('new_menu', {data: data}); });
-    socket.on('order_finished', function(data) { e1.emit('order_finished', {data: data}); });
-    socket.on('print_order', function(data) { e1.emit('print_order', data); });
-    socket.on('connect_printer', function(data) { e1.emit('connect_printer', data); });
-    socket.on('message', function(data) { e1.emit('message', {data: data}); });
+        socket.on('new_order', function(data) { con.emit('new_order', {data: data}); });
+        socket.on('new_menu', function(data) { con.emit('new_menu', {data: data}); });
+        socket.on('order_finished', function(data) { con.emit('order_finished', {data: data}); });
+        socket.on('print_order', function(data) { con.emit('print_order', data); });
+        socket.on('connect_printer', function(data) { con.emit('connect_printer', data); });
+        socket.on('message', function(data) { con.emit('message', {data: data}); });
 
-    socket.on('delivery_order', function(data) { e1.emit('delivery_order', {data: data}); });
-    socket.on('delivery_status', function(data) { delivery.emit('delivery_status', {data: data}); });
+        socket.on('delivery_order', function(data) { con.emit('delivery_order', {data: data}); });
+        socket.on('delivery_status', function(data) { delivery.emit('delivery_status', {data: data}); });
 
-});
-
-e2.on('connection', function (socket) {
-
-    socket.on('new_order', function(data) { e2.emit('new_order', {data: data}); });
-    socket.on('new_menu', function(data) { e2.emit('new_menu', {data: data}); });
-    socket.on('order_finished', function(data) { e2.emit('order_finished', {data: data}); });
-    socket.on('print_order', function(data) { e2.emit('print_order', data); });
-    socket.on('connect_printer', function(data) { e2.emit('connect_printer', data); });
-    socket.on('message', function(data) { e2.emit('message', {data: data}); });
-
-    socket.on('delivery_order', function(data) { e2.emit('delivery_order', {data: data}); });
-    socket.on('delivery_status', function(data) { delivery.emit('delivery_status', {data: data}); });
-
-});
-
-e3.on('connection', function (socket) {
-
-    socket.on('new_order', function(data) { e3.emit('new_order', {data: data}); });
-    socket.on('new_menu', function(data) { e3.emit('new_menu', {data: data}); });
-    socket.on('order_finished', function(data) { e3.emit('order_finished', {data: data}); });
-    socket.on('print_order', function(data) { e3.emit('print_order', data); });
-    socket.on('connect_printer', function(data) { e3.emit('connect_printer', data); });
-    socket.on('message', function(data) { e3.emit('message', {data: data}); });
-
-    socket.on('delivery_order', function(data) { e3.emit('delivery_order', {data: data}); });
-    socket.on('delivery_status', function(data) { delivery.emit('delivery_status', {data: data}); });
-
-});
+    });
+}
 
 delivery.on('connection', function (socket) {
 
@@ -79,6 +59,7 @@ delivery.on('connection', function (socket) {
         //console.log("Elias");
         e1.emit('delivery_order', {data: data});
         e2.emit('delivery_order', {data: data});
+        e4.emit('delivery_order', {data: data});
     });
 
 });
