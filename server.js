@@ -10,6 +10,7 @@ server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
 
+var market = io.of('/market'); //LeCard Delivery
 var delivery = io.of('/delivery'); //LeCard Delivery
 var e1 = io.of('/mbfqfluwjbaw3ron5psf2cqt'); //Homologacao
 var e2 = io.of('/mbfqfluwjbaw3ron5psf2cqr'); //Donnis Pizzaria
@@ -72,4 +73,17 @@ delivery.on('connection', function (socket) {
         }
     });
 
+});
+
+market.on('connection', function (socket) {
+  socket.on('new_request', function(data) { market.emit('new_request', {data: data}); });
+});
+
+app.get('/new-request', function (req, res) {
+  var rfid = {
+    rfid: req.query.rfid
+  };
+
+  market.emit('new_request', {data: rfid});
+  res.send('ok ' + rfid.rfid);
 });
