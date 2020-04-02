@@ -10,12 +10,11 @@ server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
 
-var market = io.of('/market'); //LeCard Delivery
 var delivery = io.of('/delivery'); //LeCard Delivery
 var e1 = io.of('/mbfqfluwjbaw3ron5psf2cqt'); //Homologacao
 var e2 = io.of('/mbfqfluwjbaw3ron5psf2cqr'); //Donnis Pizzaria
-var e3 = io.of('/3'); //Donnis Pizzaria (Temporario)
-var e4 = io.of('/tiophilluwjbaw3ron5psf2qr2'); //Tio Phill
+var e3 = io.of('/tiophilluwjbaw3ron5psf2qr2'); //Tio Phill
+var e4 = io.of('/tatululuwjbaw3ron5psf2qr3'); //Tatu
 
 setConection(e1);
 setConection(e2);
@@ -56,34 +55,24 @@ delivery.on('connection', function (socket) {
         delivery.emit('delivery_status', {data: data});
     });
 
-    socket.on('delivery_order', function(data) {
-        
-        switch(data.token) {
-            case 'mbfqfluwjbaw3ron5psf2cqt':
-                e1.emit('delivery_order', {data: data}); 
-                break;
-            
-            case 'mbfqfluwjbaw3ron5psf2cqr':
-                e2.emit('delivery_order', {data: data});        
-                break;
-            
-            case 'tiophilluwjbaw3ron5psf2qr2':
-                e4.emit('delivery_order', {data: data});        
-                break;
-        }
-    });
+    socket.on('delivery_order', function(data) {});
 
-});
+    switch(data.token) {
+        case 'mbfqfluwjbaw3ron5psf2cqt':
+            e1.emit('delivery_order', {data: data});
+            break;
 
-market.on('connection', function (socket) {
-  socket.on('new_request', function(data) { market.emit('new_request', {data: data}); });
-});
+        case 'mbfqfluwjbaw3ron5psf2cqr':
+            e2.emit('delivery_order', {data: data});
+            break;
 
-app.get('/new-request', function (req, res) {
-  var rfid = {
-    rfid: req.query.rfid
-  };
+        case 'tiophilluwjbaw3ron5psf2qr2':
+            e3.emit('delivery_order', {data: data});
+            break;
 
-  market.emit('new_request', {data: rfid});
-  res.send('ok ' + rfid.rfid);
+        case 'tatululuwjbaw3ron5psf2qr3':
+            e4.emit('delivery_order', {data: data});
+            break;
+    }
+
 });
