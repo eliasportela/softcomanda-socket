@@ -45,6 +45,7 @@ function setConection(con) {
 
         socket.on('delivery_order', function(data) { con.emit('delivery_order', {data: data}); });
         socket.on('delivery_status', function(data) { delivery.emit('delivery_status', {data: data}); });
+        socket.on('notification', function(data) { con.emit('notification', {data: data}); });
 
     });
 }
@@ -56,7 +57,6 @@ delivery.on('connection', function (socket) {
     });
 
     socket.on('delivery_order', function(data) {
-
         switch(data.token) {
             case 'mbfqfluwjbaw3ron5psf2cqt':
                 e1.emit('delivery_order', {data: data});
@@ -76,4 +76,23 @@ delivery.on('connection', function (socket) {
         }
     });
 
+    socket.on('notification', function(data) {
+        switch(data.token) {
+            case 'mbfqfluwjbaw3ron5psf2cqt':
+                e1.emit('notification', {data: data});
+                break;
+
+            case 'mbfqfluwjbaw3ron5psf2cqr':
+                e2.emit('notification', {data: data});
+                break;
+
+            case 'tiophilluwjbaw3ron5psf2qr2':
+                e3.emit('notification', {data: data});
+                break;
+
+            case 'tatululuwjbaw3ron5psf2qr3':
+                e4.emit('notification', {data: data});
+                break;
+        }
+    });
 });
