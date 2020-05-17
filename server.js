@@ -10,6 +10,7 @@ server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
+var suporte = io.of('/suporte'); //LeCard Suporte
 var delivery = io.of('/delivery'); //LeCard Delivery
 var e1 = io.of('/mbfqfluwjbaw3ron5psf2cqt'); //Homologacao
 var e2 = io.of('/mbfqfluwjbaw3ron5psf2cqr'); //Donnis Pizzaria
@@ -63,26 +64,32 @@ delivery.on('connection', function (socket) {
   socket.on('delivery_order', function(data) {
     switch(data.token) {
       case 'mbfqfluwjbaw3ron5psf2cqt':
+        suporte.emit('delivery_order', {data: data});
         e1.emit('delivery_order', {data: data});
         break;
 
       case 'mbfqfluwjbaw3ron5psf2cqr':
+        suporte.emit('delivery_order', {data: data});
         e2.emit('delivery_order', {data: data});
         break;
 
       case 'tiophilluwjbaw3ron5psf2qr2':
+        suporte.emit('delivery_order', {data: data});
         e3.emit('delivery_order', {data: data});
         break;
 
       case 'tatululuwjbaw3ron5psf2qr3':
+        suporte.emit('delivery_order', {data: data});
         e4.emit('delivery_order', {data: data});
         break;
 
       case 'gaucholuluwjbaw3ron5psf4':
+        suporte.emit('delivery_order', {data: data});
         e5.emit('delivery_order', {data: data});
         break;
 
       case 'chocoburguerluluwjbaw3ron5psf4':
+        suporte.emit('delivery_order', {data: data});
         e6.emit('delivery_order', {data: data});
         break;
     }
