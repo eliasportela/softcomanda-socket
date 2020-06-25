@@ -1,32 +1,28 @@
-var socket = require( 'socket.io' );
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
+const socket = require( 'socket.io' );
+const express = require('express');
+const app = express();
+const server = require('http').createServer(app);
 
-var io = socket.listen( server );
+const io = socket.listen( server );
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
-var suporte = io.of('/suporte'); //LeCard Suporte
-var delivery = io.of('/delivery'); //LeCard Delivery
-var e1 = io.of('/mbfqfluwjbaw3ron5psf2cqt'); //Homologacao
-var e2 = io.of('/mbfqfluwjbaw3ron5psf2cqr'); //Donnis Pizzaria
-var e3 = io.of('/tiophilluwjbaw3ron5psf2qr2'); //Tio Phill
-var e4 = io.of('/tatululuwjbaw3ron5psf2qr3'); //Tatu
-var e5 = io.of('/gaucholuluwjbaw3ron5psf4'); //Gaucho
-var e6 = io.of('/chocoburguerluluwjbaw3ron5psf4'); //Chocoburguer
-var e7 = io.of('/sacolaoluluwjbaw3ron5psf4'); //sacolao
+const suporte = io.of('/suporte'); //LeCard Suporte
+const delivery = io.of('/delivery'); //LeCard Delivery
+const e1 = io.of('/mbfqfluwjbaw3ron5psf2cqt'); //Homologacao
+const e2 = io.of('/mbfqfluwjbaw3ron5psf2cqr'); //Donnis Pizzaria
+const e3 = io.of('/tiophilluwjbaw3ron5psf2qr2'); //Tio Phill
+const e4 = io.of('/tatululuwjbaw3ron5psf2qr3'); //Tatu
+const e5 = io.of('/sacolaoluluwjbaw3ron5psf4'); //sacolao
 
 setConection(e1);
 setConection(e2);
 setConection(e3);
 setConection(e4);
 setConection(e5);
-setConection(e6);
-setConection(e7);
 
 /*
 new_order => novo pedido
@@ -85,19 +81,9 @@ delivery.on('connection', function (socket) {
         e4.emit('delivery_order', {data: data});
         break;
 
-      case 'gaucholuluwjbaw3ron5psf4':
-        suporte.emit('delivery_order', {data: data});
-        e5.emit('delivery_order', {data: data});
-        break;
-
-      case 'chocoburguerluluwjbaw3ron5psf4':
-        suporte.emit('delivery_order', {data: data});
-        e6.emit('delivery_order', {data: data});
-        break;
-
       case 'sacolaoluluwjbaw3ron5psf4':
         suporte.emit('delivery_order', {data: data});
-        e7.emit('delivery_order', {data: data});
+        e5.emit('delivery_order', {data: data});
         break;
     }
   });
@@ -120,16 +106,8 @@ delivery.on('connection', function (socket) {
         e4.emit('notification', {data: data});
         break;
 
-      case 'gaucholuluwjbaw3ron5psf4':
-        e5.emit('notification', {data: data});
-        break;
-
-      case 'chocoburguerluluwjbaw3ron5psf4':
-        e6.emit('notification', {data: data});
-        break;
-
       case 'sacolaoluluwjbaw3ron5psf4':
-        e7.emit('notification', {data: data});
+        e5.emit('notification', {data: data});
         break;
     }
   });
