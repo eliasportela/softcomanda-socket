@@ -85,8 +85,7 @@ delivery.on('connection', function (socket) {
         break;
 
       case 'theminasbariluluwjbaw3ron5psf4':
-        suporte.emit('delivery_order', {data: data});
-        e3.emit('delivery_order', {data: data});
+        e3.emit('notification', {data: data});
         break;
     }
   });
