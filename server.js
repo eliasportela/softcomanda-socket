@@ -76,7 +76,7 @@ delivery.on('connection', function (socket) {
 
       case 'lanobigodeiluluwjbaw3ron5psf4':
         suporte.emit('delivery_order', {data: data});
-        e3.emit('delivery_order', {data: data});
+        e4.emit('delivery_order', {data: data});
         break;
     }
   });
