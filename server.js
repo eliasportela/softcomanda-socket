@@ -15,10 +15,12 @@ const delivery = io.of('/delivery'); //LeCard Delivery
 const e1 = io.of('/chocoburguerluluwjbaw3ron5psf4'); //Chocoburguer
 const e2 = io.of('/pointdoacailuluwjbaw3ron5psf4'); //Point do acai
 const e3 = io.of('/theminasbariluluwjbaw3ron5psf4'); //TheMinas
+const e4 = io.of('/lanobigodeiluluwjbaw3ron5psf4'); //Lanobigode
 
 setConection(e1);
 setConection(e2);
 setConection(e3);
+setConection(e4);
 
 /*
 new_order => novo pedido
@@ -71,6 +73,11 @@ delivery.on('connection', function (socket) {
         suporte.emit('delivery_order', {data: data});
         e3.emit('delivery_order', {data: data});
         break;
+
+      case 'lanobigodeiluluwjbaw3ron5psf4':
+        suporte.emit('delivery_order', {data: data});
+        e3.emit('delivery_order', {data: data});
+        break;
     }
   });
 
@@ -86,6 +93,10 @@ delivery.on('connection', function (socket) {
 
       case 'theminasbariluluwjbaw3ron5psf4':
         e3.emit('notification', {data: data});
+        break;
+
+      case 'lanobigodeiluluwjbaw3ron5psf4':
+        e4.emit('notification', {data: data});
         break;
     }
   });
