@@ -13,6 +13,7 @@ server.listen(port, function () {
 const suporte = io.of('/suporte'); //LeCard Suporte
 const delivery = io.of('/delivery'); //LeCard Delivery
 const e1 = io.of('/gaucholuluwjbaw3ron5psf4'); //Gaucho
+const e2 = io.of('/sabordoorienteiluluwjbaw3ron5psf4'); //Sabor do Oriente
 
 setConection(e1);
 
@@ -57,6 +58,11 @@ delivery.on('connection', function (socket) {
         suporte.emit('delivery_order', {data: data});
         e1.emit('delivery_order', {data: data});
         break;
+
+      case 'sabordoorienteiluluwjbaw3ron5psf4':
+        suporte.emit('delivery_order', {data: data});
+        e2.emit('delivery_order', {data: data});
+        break;
     }
   });
 
@@ -64,6 +70,10 @@ delivery.on('connection', function (socket) {
     switch(data.token) {
       case 'gaucholuluwjbaw3ron5psf4':
         e1.emit('notification', {data: data});
+        break;
+
+      case 'sabordoorienteiluluwjbaw3ron5psf4':
+        e2.emit('notification', {data: data});
         break;
     }
   });
