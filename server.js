@@ -14,6 +14,9 @@ const suporte = io.of('/suporte'); //LeCard Suporte
 const delivery = io.of('/delivery'); //LeCard Delivery
 const e1 = io.of('/gaucholuluwjbaw3ron5psf4'); //Gaucho
 const e2 = io.of('/sabordoorienteiluluwjbaw3ron5psf4'); //Sabor do Oriente
+const e3 = io.of('/bardogerenteiluluwjbaw3ron5psf4'); //Bar do Gerente
+const e4 = io.of('/lugsfrancailuluwjbaw3ron5psf4'); //Lugs
+const e5 = io.of('/bomsaboriluluwjbaw3ron5psf4'); //Bom Sabor
 
 setConection(e1);
 
@@ -63,6 +66,21 @@ delivery.on('connection', function (socket) {
         suporte.emit('delivery_order', {data: data});
         e2.emit('delivery_order', {data: data});
         break;
+
+      case 'bardogerenteiluluwjbaw3ron5psf4':
+        suporte.emit('delivery_order', {data: data});
+        e3.emit('delivery_order', {data: data});
+        break;
+
+      case 'lugsfrancailuluwjbaw3ron5psf4':
+        suporte.emit('delivery_order', {data: data});
+        e4.emit('delivery_order', {data: data});
+        break;
+
+      case 'bomsaboriluluwjbaw3ron5psf4':
+        suporte.emit('delivery_order', {data: data});
+        e5.emit('delivery_order', {data: data});
+        break;
     }
   });
 
@@ -74,6 +92,18 @@ delivery.on('connection', function (socket) {
 
       case 'sabordoorienteiluluwjbaw3ron5psf4':
         e2.emit('notification', {data: data});
+        break;
+
+      case 'bardogerenteiluluwjbaw3ron5psf4':
+        e3.emit('notification', {data: data});
+        break;
+
+      case 'lugsfrancailuluwjbaw3ron5psf4':
+        e4.emit('notification', {data: data});
+        break;
+
+      case 'bomsaboriluluwjbaw3ron5psf4':
+        e5.emit('notification', {data: data});
         break;
     }
   });
