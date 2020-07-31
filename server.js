@@ -16,7 +16,42 @@ const ioempresas = io.of('/empresas');
 ioempresas.on('connection', function (socket) {
 
   socket.on('empresa_connected', function(token) {
+    console.log(token)
     socket.join(token);
+  });
+
+  //PDV
+  socket.on('new_order', function(token) {
+    ioempresas.in(token).emit('new_order');
+  });
+
+  socket.on('new_menu', function(token) {
+    ioempresas.in(token).emit('new_menu');
+  });
+
+  socket.on('order_finished', function(token) {
+    ioempresas.in(token).emit('order_finished');
+  });
+
+  socket.on('print_order', function(data) {
+    ioempresas.in(data.token).emit('print_order', data);
+  });
+
+  socket.on('connect_printer', function(token) {
+    ioempresas.in(token).emit('connect_printer');
+  });
+
+  socket.on('message', function(token) {
+    ioempresas.in(token).emit('message');
+  });
+
+  //Delivery
+  socket.on('delivery_order', function(token) {
+    ioempresas.in(token).emit('delivery_order');
+  });
+
+  socket.on('notification', function(token) {
+    ioempresas.in(token).emit('notification');
   });
 
   socket.on('delivery_status', function(token) {
@@ -28,13 +63,22 @@ ioempresas.on('connection', function (socket) {
 delivery.on('connection', function (socket) {
 
   socket.on('delivery_connected', (token) => {
+    console.log(token)
     socket.join(token);
-  })
+  });
+
+  socket.on('delivery_order', function(token) {
+    ioempresas.in(token).emit('delivery_order');
+  });
+
+  socket.on('notification', function(data) {
+    ioempresas.in(data.token).emit('notification', data);
+  });
 
 });
 
 app.get('/send-empresa', function(req, res) {
-  ioempresas.in('gaucholuluwjbaw3ron5psf4').emit('new_order', 'what is going on, party people?');
+  ioempresas.in('mbfqfluwjbaw3ron5psf2cqt').emit('notification', {play: true});
   res.send('Send Order');
 });
 
