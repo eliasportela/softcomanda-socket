@@ -10,52 +10,35 @@ server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
-const suporte = io.of('/suporte'); //LeCard Suporte
-const delivery = io.of('/delivery'); //LeCard Delivery
-const ioempresas = io.of('/empresas'); //LeCard empresas
-
-
-/*
-#print_order => Imprimir pedido
-#delivery_order => Novo pedido delivery
-#delivery_status => Troca de status (preprando / enviado entrega / finalizado)
-#notification  => Som das notifcacoes no Gestor (play / pause)
-*/
+const delivery = io.of('/delivery');
+const ioempresas = io.of('/empresas');
 
 ioempresas.on('connection', function (socket) {
 
-  socket.on('connect', function(socket) {
-    console.log('Eliiias', socket);
+  socket.on('empresa_connected', function(token) {
+    socket.join(token);
   });
 
-  socket.on('print_order', function(data) { ioempresas.emit('print_order', data); });
-  socket.on('delivery_order', function(data) { ioempresas.emit('delivery_order', {data: data}); });
-  socket.on('delivery_status', function(data) { delivery.emit('delivery_status', {data: data}); });
-  socket.on('notification', function(data) { ioempresas.emit('notification', {data: data}); });
+  socket.on('delivery_status', function(token) {
+    delivery.in(token).emit('delivery_status');
+  });
+
 });
 
 delivery.on('connection', function (socket) {
 
-  socket.on('connect', function(socket) {
-    console.log('conectou', socket);
-  });
-
-  socket.on('delivery_status', function(data) {
-    delivery.emit('delivery_status', {data: data});
-  });
-
-  socket.on('delivery_order', function(data) {
-    // data.token
-    ioempresas.emit('delivery_order', {data: data});
-    suporte.emit('delivery_order', {data: data});
-  });
+  socket.on('delivery_connected', (token) => {
+    socket.join(token);
+  })
 
 });
 
-app.get('/hello', function(req, res) {
-  res.send('hello world');
+app.get('/send-empresa', function(req, res) {
+  ioempresas.in('gaucholuluwjbaw3ron5psf4').emit('new_order', 'what is going on, party people?');
+  res.send('Send Order');
 });
 
-app.get('/hello', function(req, res) {
-  res.send('hello world');
+app.get('/send-delivery', function(req, res) {
+  delivery.emit('delivery_status', '15mbfqfluwjbaw3ron5psf2cqt');
+  res.send('Send Delivery');
 });
