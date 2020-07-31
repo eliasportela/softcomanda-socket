@@ -19,6 +19,10 @@ const e4 = io.of('/lugsfrancailuluwjbaw3ron5psf4'); //Lugs
 const e5 = io.of('/bomsaboriluluwjbaw3ron5psf4'); //Bom Sabor
 
 setConection(e1);
+setConection(e2);
+setConection(e3);
+setConection(e4);
+setConection(e5);
 
 /*
 new_order => novo pedido
