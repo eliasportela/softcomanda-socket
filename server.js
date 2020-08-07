@@ -108,7 +108,7 @@ delivery.on('connection', function (socket) {
 
       case 'donisguaxupeiluluwjbaw3ron5psf4':
         suporte.emit('delivery_order', {data: data});
-        e5.emit('delivery_order', {data: data});
+        e5.emit('notification', {data: data});
         break;
     }
   });
