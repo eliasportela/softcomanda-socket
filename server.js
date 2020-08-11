@@ -10,6 +10,12 @@ server.listen(port, function () {
   console.log('Server listening at port %d', port);
 });
 
+const bodyParser = require('body-parser')
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
 const delivery = io.of('/delivery');
 const ioempresas = io.of('/empresas');
 
@@ -50,8 +56,8 @@ ioempresas.on('connection', function (socket) {
     ioempresas.in(token).emit('delivery_order');
   });
 
-  socket.on('notification', function(token) {
-    ioempresas.in(token).emit('notification');
+  socket.on('notification', function(data) {
+    ioempresas.in(data.token).emit('notification', data);
   });
 
   socket.on('delivery_status', function(token) {
@@ -77,12 +83,24 @@ delivery.on('connection', function (socket) {
 
 });
 
-app.get('/send-empresa', function(req, res) {
-  ioempresas.in('mbfqfluwjbaw3ron5psf2cqt').emit('notification', {play: true});
-  res.send('Send Order');
+app.post('/api/new-order', function(req, res) {
+  const { socket_id, play } = req.body
+
+  if (socket_id && play !== undefined) {
+    ioempresas.in(socket_id).emit('delivery_order');
+    ioempresas.in(socket_id).emit('notification', {play: play});
+  }
+
+  console.log('Sockey send: ' + socket_id);
+  res.json({success: true});
 });
 
-app.get('/send-delivery', function(req, res) {
-  delivery.emit('delivery_status', '15mbfqfluwjbaw3ron5psf2cqt');
-  res.send('Send Delivery');
+app.post('/api/change-status', function(req, res) {
+  const {socket_id} = req.body
+  if (socket_id) {
+    delivery.in(socket_id).emit('delivery_status');
+  }
+
+  console.log('Sockey send: ' + socket_id);
+  res.json({success: true});
 });
