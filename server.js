@@ -16,52 +16,15 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+const suport = io.of('/suport');
 const delivery = io.of('/delivery');
 const ioempresas = io.of('/empresas');
 
 ioempresas.on('connection', function (socket) {
 
   socket.on('empresa_connected', function(token) {
-    console.log(token)
+    console.log('Empresa conectada: ' + token)
     socket.join(token);
-  });
-
-  //PDV
-  socket.on('new_order', function(token) {
-    ioempresas.in(token).emit('new_order');
-  });
-
-  socket.on('new_menu', function(token) {
-    ioempresas.in(token).emit('new_menu');
-  });
-
-  socket.on('order_finished', function(token) {
-    ioempresas.in(token).emit('order_finished');
-  });
-
-  socket.on('print_order', function(data) {
-    ioempresas.in(data.token).emit('print_order', data);
-  });
-
-  socket.on('connect_printer', function(token) {
-    ioempresas.in(token).emit('connect_printer');
-  });
-
-  socket.on('message', function(token) {
-    ioempresas.in(token).emit('message');
-  });
-
-  //Delivery
-  socket.on('delivery_order', function(token) {
-    ioempresas.in(token).emit('delivery_order');
-  });
-
-  socket.on('notification', function(data) {
-    ioempresas.in(data.token).emit('notification', data);
-  });
-
-  socket.on('delivery_status', function(token) {
-    delivery.in(token).emit('delivery_status');
   });
 
 });
@@ -69,26 +32,25 @@ ioempresas.on('connection', function (socket) {
 delivery.on('connection', function (socket) {
 
   socket.on('delivery_connected', (token) => {
-    console.log(token)
+    console.log('Cliente conectado: ' + token)
     socket.join(token);
-  });
-
-  socket.on('delivery_order', function(token) {
-    ioempresas.in(token).emit('delivery_order');
-  });
-
-  socket.on('notification', function(data) {
-    ioempresas.in(data.token).emit('notification', data);
   });
 
 });
 
 app.post('/api/new-order', function(req, res) {
-  const { socket_id, play } = req.body
-
+  const { socket_id, play, cancel } = req.body
+  console.log(req.body)
   if (socket_id && play !== undefined) {
     ioempresas.in(socket_id).emit('delivery_order');
     ioempresas.in(socket_id).emit('notification', {play: play});
+  }
+
+  if (play && !cancel) {
+    suport.emit('delivery_order');
+
+  } else if (cancel) {
+    suport.emit('canceled_order')
   }
 
   console.log('Sockey send: ' + socket_id);
@@ -96,9 +58,13 @@ app.post('/api/new-order', function(req, res) {
 });
 
 app.post('/api/change-status', function(req, res) {
-  const {socket_id} = req.body
+  const {socket_id, status} = req.body
   if (socket_id) {
     delivery.in(socket_id).emit('delivery_status');
+  }
+
+  if (status == 2) {
+    suport.emit('confirmed_order');
   }
 
   console.log('Sockey send: ' + socket_id);
