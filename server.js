@@ -43,17 +43,17 @@ delivery.on('connection', function (socket) {
 });
 
 app.post('/api/new-order', function(req, res) {
-  const { socket_id, play, cancel } = req.body
-  console.log(req.body)
+  const { socket_id, play, canceled } = req.body
+
   if (socket_id && play !== undefined) {
     ioempresas.in(socket_id).emit('delivery_order');
     ioempresas.in(socket_id).emit('notification', {play: play});
   }
 
-  if (play && !cancel) {
+  if (play && !canceled) {
     suport.emit('delivery_order');
 
-  } else if (cancel) {
+  } else if (canceled) {
     suport.emit('canceled_order')
   }
 
@@ -67,8 +67,12 @@ app.post('/api/change-status', function(req, res) {
     delivery.in(socket_id).emit('delivery_status');
   }
 
-  if (status == 2) {
+  const statusPedido = parseInt(status);
+  if (statusPedido === 2) {
     suport.emit('confirmed_order');
+
+  } else if (statusPedido === 5) {
+    suport.emit('canceled_order')
   }
 
   console.log('Sockey send: ' + socket_id);
