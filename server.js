@@ -31,6 +31,24 @@ ioempresas.on('connection', function (socket) {
     ioempresas.in(data.token).emit('notification', {play: data.play});
   });
 
+  socket.on('delivery_status', function(data) {
+    const {socket_id, status} = data;
+
+    if (socket_id) {
+      delivery.in(socket_id).emit('delivery_status');
+    }
+
+    const statusPedido = parseInt(status);
+    if (statusPedido == 2) {
+      suport.emit('confirmed_order');
+
+    } else if (statusPedido == 5) {
+      suport.emit('canceled_order')
+    }
+
+    console.log('Sockey send: ' + socket_id);
+  });
+
 });
 
 delivery.on('connection', function (socket) {
