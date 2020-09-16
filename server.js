@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({
 const suport = io.of('/suport');
 const delivery = io.of('/delivery');
 const ioempresas = io.of('/empresas');
+const comanda = io.of('/comanda');
 
 ioempresas.on('connection', function (socket) {
 
@@ -56,6 +57,20 @@ delivery.on('connection', function (socket) {
   socket.on('delivery_connected', (token) => {
     console.log('Cliente conectado: ' + token)
     socket.join(token);
+  });
+
+});
+
+comanda.on('connection', function (socket) {
+
+  socket.on('empresa_connected', function(token) {
+    console.log('Comanda conectada: ' + token)
+    socket.join(token);
+  });
+
+  socket.on('print_order', function(data) {
+    const {token} = data;
+    ioempresas.in(token).emit('print_order', data);
   });
 
 });
