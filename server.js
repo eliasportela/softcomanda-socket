@@ -70,9 +70,9 @@ comanda.on('connection', function (socket) {
 
   socket.on('print_order', function(data) {
     const {token} = data;
+    socket.in(token).emit('print_order', data);
     ioempresas.in(token).emit('print_order', data);
   });
-
 });
 
 app.post('/api/new-order', function(req, res) {
