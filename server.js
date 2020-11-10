@@ -24,7 +24,7 @@ const comanda = io.of('/comanda');
 ioempresas.on('connection', function (socket) {
 
   socket.on('empresa_connected', function(token) {
-    console.log('Empresa conectada: ' + token)
+    // console.log('Empresa conectada: ' + token)
     socket.join(token);
   });
 
@@ -47,7 +47,7 @@ ioempresas.on('connection', function (socket) {
       suport.emit('canceled_order')
     }
 
-    console.log('Sockey send: ' + socket_id);
+    // console.log('Sockey send: ' + socket_id);
   });
 
 });
@@ -55,7 +55,7 @@ ioempresas.on('connection', function (socket) {
 delivery.on('connection', function (socket) {
 
   socket.on('delivery_connected', (token) => {
-    console.log('Cliente conectado: ' + token)
+    // console.log('Cliente conectado: ' + token)
     socket.join(token);
   });
 
@@ -64,7 +64,7 @@ delivery.on('connection', function (socket) {
 comanda.on('connection', function (socket) {
 
   socket.on('empresa_connected', function(token) {
-    console.log('Comanda conectada: ' + token)
+    // console.log('Comanda conectada: ' + token)
     socket.join(token);
   });
 
@@ -76,11 +76,11 @@ comanda.on('connection', function (socket) {
 });
 
 app.post('/api/new-order', function(req, res) {
-  const { socket_id, play, canceled } = req.body
+  const { socket_id, play, nome_fantasia, canceled } = req.body
 
   if (socket_id && play !== undefined) {
     ioempresas.in(socket_id).emit('delivery_order');
-    ioempresas.in(socket_id).emit('notification', {play: play});
+    ioempresas.in(socket_id).emit('notification', { play, nome_fantasia });
   }
 
   if (play && !canceled) {
@@ -90,7 +90,7 @@ app.post('/api/new-order', function(req, res) {
     suport.emit('canceled_order')
   }
 
-  console.log('Sockey send: ' + socket_id);
+  // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
 
@@ -108,6 +108,6 @@ app.post('/api/change-status', function(req, res) {
     suport.emit('canceled_order')
   }
 
-  console.log('Sockey send: ' + socket_id);
+  // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
