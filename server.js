@@ -111,3 +111,14 @@ app.post('/api/change-status', function(req, res) {
   // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
+
+app.post('/api/status-empresa', function(req, res) {
+  const { socket_id, aberto } = req.body;
+
+  if (socket_id) {
+    ioempresas.in(socket_id).emit('status_empresa', { aberto });
+  }
+
+  // console.log('Sockey send: ' + socket_id);
+  res.json({success: true});
+});
