@@ -122,3 +122,14 @@ app.post('/api/status-empresa', function(req, res) {
   // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
+
+app.post('/api/request-human', function(req, res) {
+  const { socket_id, telefone } = req.body;
+
+  if (socket_id) {
+    ioempresas.in(socket_id).emit('request_human', { telefone });
+  }
+
+  // console.log('Sockey send: ' + socket_id);
+  res.json({success: true});
+});
