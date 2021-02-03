@@ -33,10 +33,14 @@ ioempresas.on('connection', function (socket) {
   });
 
   socket.on('delivery_status', function(data) {
-    const {socket_id, status} = data;
+    const { socket_id, token, status, msg, to } = data;
 
     if (socket_id) {
       delivery.in(socket_id).emit('delivery_status');
+
+      if (msg && to) {
+        ioempresas.in(token).emit('delivery_whatsapp', { msg, to });
+      }
     }
 
     const statusPedido = parseInt(status);
@@ -57,6 +61,13 @@ delivery.on('connection', function (socket) {
   socket.on('delivery_connected', (token) => {
     // console.log('Cliente conectado: ' + token)
     socket.join(token);
+  });
+
+  socket.on('delivery_order', (data) => {
+    const {socket_id, msg, to} = data;
+    if (msg && to) {
+      ioempresas.in(socket_id).emit('delivery_whatsapp', { to, msg });
+    }
   });
 
 });
@@ -95,7 +106,7 @@ app.post('/api/new-order', function(req, res) {
 });
 
 app.post('/api/change-status', function(req, res) {
-  const {socket_id, status} = req.body
+  const { socket_id, status } = req.body;
   if (socket_id) {
     delivery.in(socket_id).emit('delivery_status');
   }
