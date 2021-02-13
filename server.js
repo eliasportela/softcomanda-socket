@@ -63,13 +63,6 @@ delivery.on('connection', function (socket) {
     socket.join(token);
   });
 
-  socket.on('delivery_order', (data) => {
-    const {socket_id, msg, to} = data;
-    if (msg && to) {
-      ioempresas.in(socket_id).emit('delivery_whatsapp', { to, msg });
-    }
-  });
-
 });
 
 comanda.on('connection', function (socket) {
@@ -87,11 +80,17 @@ comanda.on('connection', function (socket) {
 });
 
 app.post('/api/new-order', function(req, res) {
-  const { socket_id, play, nome_fantasia, canceled } = req.body
+  const { socket_id, play, nome_fantasia, canceled, whatsapp } = req.body
 
   if (socket_id && play !== undefined) {
     ioempresas.in(socket_id).emit('delivery_order');
     ioempresas.in(socket_id).emit('notification', { play, nome_fantasia });
+
+    console.log('whatsapp', whatsapp);
+    if (whatsapp) {
+      console.log('elias');
+      ioempresas.in(socket_id).emit('delivery_whatsapp', whatsapp)
+    }
   }
 
   if (play && !canceled) {
