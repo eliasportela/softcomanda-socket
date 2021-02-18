@@ -33,14 +33,10 @@ ioempresas.on('connection', function (socket) {
   });
 
   socket.on('delivery_status', function(data) {
-    const { socket_id, token, status, msg, to } = data;
+    const { socket_id, status } = data;
 
     if (socket_id) {
       delivery.in(socket_id).emit('delivery_status');
-
-      if (msg && to) {
-        ioempresas.in(token).emit('delivery_whatsapp', { msg, to });
-      }
     }
 
     const statusPedido = parseInt(status);
@@ -86,9 +82,7 @@ app.post('/api/new-order', function(req, res) {
     ioempresas.in(socket_id).emit('delivery_order');
     ioempresas.in(socket_id).emit('notification', { play, nome_fantasia });
 
-    console.log('whatsapp', whatsapp);
     if (whatsapp) {
-      console.log('elias');
       ioempresas.in(socket_id).emit('delivery_whatsapp', whatsapp)
     }
   }
@@ -127,6 +121,17 @@ app.post('/api/status-empresa', function(req, res) {
 
   if (socket_id) {
     ioempresas.in(socket_id).emit('status_empresa', { aberto });
+  }
+
+  // console.log('Sockey send: ' + socket_id);
+  res.json({success: true});
+});
+
+app.post('/api/delivery-whatsapp', function(req, res) {
+  const { socket_id, whatsapp } = req.body;
+
+  if (socket_id && whatsapp) {
+    ioempresas.in(socket_id).emit('delivery_whatsapp', whatsapp);
   }
 
   // console.log('Sockey send: ' + socket_id);
