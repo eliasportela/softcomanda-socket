@@ -50,6 +50,13 @@ ioempresas.on('connection', function (socket) {
     // console.log('Sockey send: ' + socket_id);
   });
 
+  socket.on('print', function(data) {
+    const {token, content} = data;
+    if (token && content) {
+      ioempresas.in(token).emit('print', content);
+    }
+  });
+
 });
 
 delivery.on('connection', function (socket) {
