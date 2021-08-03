@@ -24,8 +24,8 @@ const comanda = io.of('/comanda');
 ioempresas.on('connection', function (socket) {
 
   socket.on('empresa_connected', function(token) {
-    // console.log('Empresa conectada: ' + token)
     socket.join(token);
+    suport.emit('empresas_online', Object.keys(ioempresas.adapter.rooms));
   });
 
   socket.on('notification', (data) => {
@@ -40,14 +40,13 @@ ioempresas.on('connection', function (socket) {
     }
 
     const statusPedido = parseInt(status);
-    if (statusPedido == 2) {
+
+    if (statusPedido === 2) {
       suport.emit('confirmed_order');
 
-    } else if (statusPedido == 5) {
+    } else if (statusPedido === 5) {
       suport.emit('canceled_order')
     }
-
-    // console.log('Sockey send: ' + socket_id);
   });
 
   socket.on('print', function(data) {
@@ -55,6 +54,10 @@ ioempresas.on('connection', function (socket) {
     if (token && content) {
       ioempresas.in(token).emit('print', content);
     }
+  });
+
+  socket.on('disconnect', function() {
+    suport.emit('empresas_online', Object.keys(ioempresas.adapter.rooms));
   });
 
 });
@@ -66,6 +69,12 @@ delivery.on('connection', function (socket) {
     socket.join(token);
   });
 
+});
+
+suport.on('connection', function (socket) {
+  socket.on('empresas_online', () => {
+    suport.emit('empresas_online', Object.keys(ioempresas.adapter.rooms));
+  });
 });
 
 comanda.on('connection', function (socket) {
@@ -154,4 +163,8 @@ app.post('/api/request-human', function(req, res) {
 
   // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
+});
+
+app.get('/api/list-online', function(req, res) {
+  res.json({empresas: Object.keys(ioempresas.adapter.rooms)});
 });
