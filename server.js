@@ -56,6 +56,16 @@ ioempresas.on('connection', function (socket) {
     }
   });
 
+  socket.on('comanda_order', function(data) {
+    if (data) {
+      const {token, content} = data;
+
+      if (token) {
+        socket.broadcast.to(token).emit('comanda_order', content);
+      }
+    }
+  });
+
   socket.on('disconnect', function() {
     suport.emit('empresas_online', Object.keys(ioempresas.adapter.rooms));
   });
@@ -92,7 +102,7 @@ comanda.on('connection', function (socket) {
 });
 
 app.post('/api/new-order', function(req, res) {
-  const { socket_id, play, nome_fantasia, canceled, whatsapp } = req.body
+  const { socket_id, play, nome_fantasia, canceled, whatsapp } = req.body;
 
   if (socket_id && play !== undefined) {
     ioempresas.in(socket_id).emit('delivery_order');
