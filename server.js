@@ -29,7 +29,12 @@ ioempresas.on('connection', function (socket) {
   });
 
   socket.on('notification', (data) => {
-    ioempresas.in(data.token).emit('notification', {play: data.play});
+    if (data && data.token) {
+      ioempresas.in(data.token).emit('notification', {
+        ...data,
+        play: !!data.play
+      });
+    }
   });
 
   socket.on('delivery_status', function(data) {
