@@ -125,36 +125,26 @@ app.post('/api/new-order', function(req, res) {
     suport.emit('canceled_order')
   }
 
-  // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
 
-app.post('/api/change-status', function(req, res) {
-  const { socket_id, status } = req.body;
-  if (socket_id) {
-    delivery.in(socket_id).emit('delivery_status');
+app.post('/api/notification', function(req, res) {
+  const { token } = req.body;
+
+  if (token) {
+    ioempresas.in(token).emit('notification', req.body);
   }
 
-  const statusPedido = parseInt(status);
-  if (statusPedido === 2) {
-    suport.emit('confirmed_order');
-
-  } else if (statusPedido === 5) {
-    suport.emit('canceled_order')
-  }
-
-  // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
 
 app.post('/api/status-empresa', function(req, res) {
-  const { socket_id, aberto } = req.body;
+  const { socket_id } = req.body;
 
   if (socket_id) {
-    ioempresas.in(socket_id).emit('status_empresa', { aberto });
+    ioempresas.in(socket_id).emit('status_empresa', req.body);
   }
 
-  // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
 
@@ -165,7 +155,6 @@ app.post('/api/delivery-whatsapp', function(req, res) {
     ioempresas.in(socket_id).emit('delivery_whatsapp', whatsapp);
   }
 
-  // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
 
@@ -176,7 +165,6 @@ app.post('/api/request-human', function(req, res) {
     ioempresas.in(socket_id).emit('request_human', { telefone });
   }
 
-  // console.log('Sockey send: ' + socket_id);
   res.json({success: true});
 });
 
