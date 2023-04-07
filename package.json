@@ -1,7 +1,7 @@
 {
-  "name": "comanda-server",
+  "name": "socket-server",
   "version": "1.0.0",
-  "description": "Comanda Virtual para bares, lanchonetes  e restaurantes",
+  "description": "",
   "main": "server.js",
   "directories": {
     "doc": "docs"
