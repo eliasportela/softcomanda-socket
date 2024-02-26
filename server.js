@@ -172,7 +172,7 @@ app.post('/api/new-chat', function(req, res) {
   const { socket_id, message } = req.body;
 
   if (socket_id) {
-    ioempresas.in(socket_id).emit('new_chat', { message });
+    ioempresas.in(socket_id).emit('new_chat', message);
   }
 
   res.json({success: true});
