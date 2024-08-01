@@ -178,6 +178,16 @@ app.post('/api/new-chat', function(req, res) {
   res.json({success: true});
 });
 
+app.post('/api/new-bot', function(req, res) {
+  const { socket_id } = req.body;
+
+  if (socket_id) {
+    ioempresas.in(socket_id).emit('new_bot');
+  }
+
+  res.json({success: true});
+});
+
 app.get('/api/list-online', function(req, res) {
   res.json({empresas: Object.keys(ioempresas.adapter.rooms)});
 });
