@@ -159,10 +159,10 @@ app.post('/api/delivery-whatsapp', function(req, res) {
 });
 
 app.post('/api/request-human', function(req, res) {
-  const { socket_id, telefone } = req.body;
+  const { socket_id, telefone, chat } = req.body;
 
   if (socket_id) {
-    ioempresas.in(socket_id).emit('request_human', { telefone });
+    ioempresas.in(socket_id).emit('request_human', { telefone, token: socket_id, chat });
   }
 
   res.json({success: true});
