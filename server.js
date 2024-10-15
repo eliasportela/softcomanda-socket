@@ -114,7 +114,7 @@ app.post('/api/new-order', function(req, res) {
     ioempresas.in(socket_id).emit('notification', { play, nome_fantasia });
 
     if (whatsapp) {
-      ioempresas.in(socket_id).emit('delivery_whatsapp', whatsapp)
+      ioempresas.in(socket_id).emit('delivery_whatsapp', socket_id)
     }
   }
 
@@ -152,7 +152,7 @@ app.post('/api/delivery-whatsapp', function(req, res) {
   const { socket_id, whatsapp } = req.body;
 
   if (socket_id && whatsapp) {
-    ioempresas.in(socket_id).emit('delivery_whatsapp', whatsapp);
+    ioempresas.in(socket_id).emit('delivery_whatsapp', socket_id);
   }
 
   res.json({success: true});
