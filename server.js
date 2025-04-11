@@ -188,6 +188,16 @@ app.post('/api/new-bot', function(req, res) {
   res.json({success: true});
 });
 
+app.post('/api/entregador', function(req, res) {
+  const { socket_id, id_entregador } = req.body;
+
+  if (socket_id) {
+    ioempresas.in(socket_id).emit('entregador', { id_entregador });
+  }
+
+  res.json({success: true});
+});
+
 app.get('/api/list-online', function(req, res) {
   res.json({empresas: Object.keys(ioempresas.adapter.rooms)});
 });
